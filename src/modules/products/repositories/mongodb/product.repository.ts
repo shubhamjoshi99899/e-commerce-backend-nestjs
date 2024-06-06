@@ -1,8 +1,7 @@
-import { Model } from 'mongoose';
+import { Model, Types as MongooseTypes } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import ProductRepositoryInterface from '../product.repository.interface';
 import { Product } from '../../schema/product.schema';
-
 export class ProductRepository implements ProductRepositoryInterface {
   constructor(
     @InjectModel(Product.name)
@@ -19,8 +18,8 @@ export class ProductRepository implements ProductRepositoryInterface {
   /**
    * find product by id
    */
-  findById(id: string): Promise<Product> {
-    return this.productModel.findById(id).exec();
+  findById(id: MongooseTypes.ObjectId): Promise<Product> {
+    return this.productModel.findById({ _id: id }).exec();
   }
 
   /**

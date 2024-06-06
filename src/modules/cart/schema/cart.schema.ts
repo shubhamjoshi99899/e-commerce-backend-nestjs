@@ -1,8 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Schema as MongooseSchema, Types as MongooseTypes } from 'mongoose';
 
-@Schema()
+@Schema({ _id: false })
 export class CartProduct {
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Product' })
+  productId: MongooseTypes.ObjectId;
+
   @Prop({ type: MongooseSchema.Types.String })
   name: string;
 
@@ -20,20 +23,14 @@ export class CartProduct {
 
   @Prop({ type: MongooseSchema.Types.Number })
   productCode: number;
-
-  @Prop({ type: MongooseSchema.Types.ObjectId, select: false })
-  _id: MongooseSchema.Types.ObjectId;
 }
 
 export const CartProductSchema = SchemaFactory.createForClass(CartProduct);
 
-@Schema({ timestamps: true })
+@Schema({ _id: true, timestamps: true })
 export class Cart {
-  @Prop({ type: String })
-  _id: string;
-
-  @Prop({ type: String })
-  userId: string;
+  @Prop({ type: MongooseSchema.Types.ObjectId })
+  userId: MongooseTypes.ObjectId;
 
   @Prop({ type: [CartProductSchema], default: [] })
   products: CartProduct[];
@@ -51,5 +48,5 @@ export class Cart {
   totalWeight: number;
 }
 
-export type CartDocument = Cart & Document;
+export type CartDocument = Cart;
 export const CartSchema = SchemaFactory.createForClass(Cart);

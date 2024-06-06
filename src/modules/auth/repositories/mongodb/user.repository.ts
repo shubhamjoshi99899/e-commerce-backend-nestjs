@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types as MongooseTypes } from 'mongoose';
 import UserRepositoryInterface from '../user.repository.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schema/user.schema';
@@ -19,7 +19,7 @@ export class UserRepository implements UserRepositoryInterface {
   /**
    * find by id
    */
-  findById(id: string): Promise<User> {
+  findById(id: MongooseTypes.ObjectId): Promise<User> {
     return this.userModel.findById(id).exec();
   }
 
@@ -41,7 +41,7 @@ export class UserRepository implements UserRepositoryInterface {
   /**
    * update a user
    */
-  async update(id: string, data: any): Promise<User> {
+  async update(id: MongooseTypes.ObjectId, data: any): Promise<User> {
     const updatedUser = await this.userModel
       .findByIdAndUpdate(id, data, { new: true })
       .exec();

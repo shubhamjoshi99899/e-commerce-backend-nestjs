@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types as MongooseTypes } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import CartRepositoryInterface from '../cart-repository.interface';
 import { Cart } from '../../schema/cart.schema';
@@ -13,10 +13,6 @@ export class CartRepository implements CartRepositoryInterface {
    * find product by id
    */
   findById(id: string): Promise<Cart> {
-    // console.log("here id",id)
-    // const cart=await this.cartModel.findOne({_id:id}).exec();
-    // console.log("my cart", await this.cartModel.findById("652ee98341e99df3c7e71a76").exec())
-    // return cart
     try {
       const cart = this.cartModel.findById(id).exec();
       return cart;
@@ -29,8 +25,8 @@ export class CartRepository implements CartRepositoryInterface {
   /**
    * find cart by userId
    */
-  findByUserId(userId: string): Promise<Cart> {
-    return this.cartModel.findOne({ userId }).exec();
+  findByUserId(userId: MongooseTypes.ObjectId): Promise<Cart> {
+    return this.cartModel.findOne({ userId: userId }).exec();
   }
 
   /**
@@ -44,9 +40,12 @@ export class CartRepository implements CartRepositoryInterface {
   /**
    * update a product
    */
-  async update(id: string, data: any): Promise<Cart> {
+  async update(
+    userId: MongooseTypes.ObjectId,
+    updatedCartData: Partial<Cart>,
+  ): Promise<Cart | null> {
     const updatedCart = await this.cartModel
-      .findByIdAndUpdate(id, data, { new: true })
+      .findOneAndUpdate({ userId: userId }, updatedCartData, { new: true })
       .exec();
     return updatedCart;
   }

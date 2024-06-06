@@ -1,17 +1,32 @@
-import { Controller, Post, Param } from '@nestjs/common';
+import { Controller, Post, Param, Body } from '@nestjs/common';
 import { CartService } from '../service/cart.service';
-
-@Controller('cart')
+import { Types as MongooseTypes } from 'mongoose';
+@Controller({ path: 'cart' })
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
-  @Post(':userId/add-product/:productCode')
+  @Post(':userId/add-product/:productId')
   async addProductToCart(
     @Param('userId') userId: string,
-    @Param('productCode') productCode: number,
+    @Param('productId') productId: string,
+    @Body('quantity') quantity: number,
   ) {
-    console.log('from controller', productCode);
-    return this.cartService.addProductToCart(userId, productCode);
+    const cart = await this.cartService.findCartByUserId(
+      new MongooseTypes.ObjectId(userId),
+    );
+    if (!cart) {
+      return this.cartService.createCart(
+        new MongooseTypes.ObjectId(userId),
+        new MongooseTypes.ObjectId(productId),
+        quantity,
+      );
+    } else {
+      return this.cartService.addProductToCart(
+        new MongooseTypes.ObjectId(userId),
+        new MongooseTypes.ObjectId(productId),
+        quantity,
+      );
+    }
   }
 
   //   @Delete(':cartId/delete-product/:productId')

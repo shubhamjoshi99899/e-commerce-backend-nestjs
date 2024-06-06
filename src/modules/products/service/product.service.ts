@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import ProductRepositoryInterface from '../repositories/product.repository.interface';
 import { Product } from '../schema/product.schema';
 import { CreateProductBO } from '../bo/product.bo';
-
+import { Types as MongooseTypes } from 'mongoose';
 @Injectable()
 export class ProductService {
   constructor(
@@ -12,6 +12,10 @@ export class ProductService {
 
   async fetchProducts(): Promise<Product[]> {
     return this.productRepository.fetchProducts();
+  }
+
+  async fetchProduct(productId: MongooseTypes.ObjectId): Promise<Product> {
+    return this.productRepository.findById(productId);
   }
 
   async addProduct(productData: CreateProductBO): Promise<Product> {

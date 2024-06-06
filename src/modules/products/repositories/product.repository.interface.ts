@@ -1,3 +1,4 @@
+import { Types as MongooseTypes } from 'mongoose';
 import { Product } from '../schema/product.schema';
 
 export default interface ProductRepositoryInterface {
@@ -8,7 +9,7 @@ export default interface ProductRepositoryInterface {
   /**
    * find by id
    */
-  findById(id: string): Promise<Product>;
+  findById(id: MongooseTypes.ObjectId): Promise<Product>;
 
   /**
    * store a user
@@ -24,6 +25,10 @@ export default interface ProductRepositoryInterface {
    * delete a product
    */
   findByIdAndDeleteProduct(id: string): Promise<Product>;
+
+  /**
+   * find by product code
+   */
 
   findByProductCode(productCode: number): Promise<Product>;
 }

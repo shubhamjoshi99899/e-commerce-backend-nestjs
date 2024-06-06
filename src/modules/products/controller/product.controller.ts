@@ -11,6 +11,7 @@ import {
 import { CreateProductDto } from '../dto/product.dto';
 import { ProductService } from '../service/product.service';
 import { AdminGuard } from 'src/modules/auth/guards/admin.guards';
+import { Types as MongooseTypes } from 'mongoose';
 
 @Controller({
   path: 'products',
@@ -21,6 +22,13 @@ export class ProductController {
   @Get('')
   async fetch() {
     return await this.productService.fetchProducts();
+  }
+
+  @Get(':productId')
+  async fetchOne(@Param('productId') productId: string) {
+    return await this.productService.fetchProduct(
+      new MongooseTypes.ObjectId(productId),
+    );
   }
 
   @Post('add')

@@ -15,7 +15,6 @@ export class Product extends Document {
     type: MongooseSchema.Types.String,
     index: true,
     required: true,
-    unique: true,
   })
   description: string;
 
@@ -23,7 +22,6 @@ export class Product extends Document {
     type: MongooseSchema.Types.Number,
     index: true,
     required: true,
-    unique: true,
   })
   price: number;
 
@@ -34,10 +32,11 @@ export class Product extends Document {
   weight: number;
 
   @Prop({
-    type: MongooseSchema.Types.String,
+    type: MongooseSchema.Types.ObjectId,
     required: true,
+    ref: 'Category',
   })
-  category: string;
+  category: MongooseSchema.Types.ObjectId;
 
   @Prop({
     required: true,

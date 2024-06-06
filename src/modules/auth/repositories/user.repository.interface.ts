@@ -1,5 +1,5 @@
 import { User } from '../schema/user.schema';
-
+import { Types as MongooseTypes } from 'mongoose';
 export default interface UserRepositoryInterface {
   /**
    * fetch users
@@ -9,7 +9,7 @@ export default interface UserRepositoryInterface {
   /**
    * find by id
    */
-  findById(id: string): Promise<User>;
+  findById(id: MongooseTypes.ObjectId): Promise<User>;
 
   /**
    * find by email id
@@ -24,5 +24,5 @@ export default interface UserRepositoryInterface {
   /**
    * update a user
    */
-  update(id: string, data: any): Promise<User>;
+  update(id: MongooseTypes.ObjectId, data: any): Promise<User>;
 }

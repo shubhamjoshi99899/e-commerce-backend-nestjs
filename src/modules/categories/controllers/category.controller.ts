@@ -33,8 +33,6 @@ export class CategoryController {
   @Post('add')
   @UseGuards(AdminGuard)
   async add(@Body() category: CreateCategoryDTO) {
-    console.log('category');
-    console.log(category);
     return await this.categoryService.store(category);
   }
 

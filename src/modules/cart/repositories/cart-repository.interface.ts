@@ -1,5 +1,5 @@
 import { Cart } from '../schema/cart.schema';
-
+import { Types as MongooseTypes } from 'mongoose';
 export default interface CartRepositoryInterface {
   /**
    * find by id
@@ -9,7 +9,7 @@ export default interface CartRepositoryInterface {
   /**
    * find cart by userId
    */
-  findByUserId(userId: string): Promise<Cart>;
+  findByUserId(userId: MongooseTypes.ObjectId): Promise<Cart>;
 
   /**
    * store a cart
@@ -19,7 +19,7 @@ export default interface CartRepositoryInterface {
   /**
    * update a cart
    */
-  update(id: string, data: any): Promise<Cart>;
+  update(id: MongooseTypes.ObjectId, data: Cart): Promise<Cart>;
 
   /**
    * delete a cart
